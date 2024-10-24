@@ -3,10 +3,10 @@
 		"/Users/randyzwitch/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs"
 	],
 	"python.analysis.extraPaths":	["/Users/randyzwitch/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs"],
-	"python.defaultInterpreterPath": "/Users/randyzwitch/Library/Application Support/Autodesk/webdeploy/production/3324804ed0538be92e0707f386a8e8bedfeadf64/Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python",
-	"fusion-360-helper.enabled": true,
-	"fusion-360-helper.python.pythonPath": "/Users/randyzwitch/Library/Application Support/Autodesk/webdeploy/production/Autodesk Fusion 360.app/Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python",
-	"fusion-360-helper.python.extraLibs": [
+	"python.defaultInterpreterPath":	"/Users/randyzwitch/Library/Application Support/Autodesk/webdeploy/production/9abff7c9b70098dc76b6ca420435ba3d0fb2dde2/Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python",
+	"fusion-360-helper.enabled":	true,
+	"fusion-360-helper.python.pythonPath":	"/Users/randyzwitch/Library/Application Support/Autodesk/webdeploy/production/Autodesk Fusion 360.app/Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python",
+	"fusion-360-helper.python.extraLibs":	[
 		"/Users/randyzwitch/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs"
 	]
 }

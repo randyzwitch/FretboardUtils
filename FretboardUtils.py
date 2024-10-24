@@ -8,14 +8,24 @@ def run(context):
         app = adsk.core.Application.get()
         ui = app.userInterface
         
-        # Create a new command definition
+        # Create a new command definition without the resource folder argument
         cmdDef = ui.commandDefinitions.addButtonDefinition('createCenterlineCmd', 
                                                            'Create Centerline', 
                                                            'Creates a centerline in the current sketch')
         
-        # Add the command to the Sketch menu
-        sketchPanel = ui.allToolbarPanels.itemById('SketchPanel')
-        sketchPanel.controls.addCommand(cmdDef)
+        # Access the Sketch panel
+        sketchPanel = ui.allToolbarPanels.itemById('SketchCreatePanel')
+
+        # Create a drop-down control if it doesn't exist
+        dropDownControl = sketchPanel.controls.itemById('customSketchDropdown')
+        if not dropDownControl:
+            dropDownControl = sketchPanel.controls.addDropDown('Custom Sketch Tools', 
+                                                               'resources'
+                                                               'customSketchDropdown', 
+                                                               'Custom sketch tools drop-down')
+        
+        # Add the command to the drop-down
+        dropDownControl.controls.addCommand(cmdDef)
         
         # Connect the command created event
         onCommandCreated = CenterlineCommandCreatedHandler()
@@ -72,12 +82,19 @@ def stop(context):
         app = adsk.core.Application.get()
         ui = app.userInterface
         
-        # Remove the command from the panel
-        sketchPanel = ui.allToolbarPanels.itemById('SketchPanel')
-        cmdControl = sketchPanel.controls.itemById('createCenterlineCmd')
-        if cmdControl:
-            cmdControl.deleteMe()
-        
+        # Remove the command from the drop-down
+        sketchPanel = ui.allToolbarPanels.itemById('SketchCreatePanel')
+        dropDownControl = sketchPanel.controls.itemById('customSketchDropdown')
+        if dropDownControl:
+            cmdControl = dropDownControl.controls.itemById('createCenterlineCmd')
+            if cmdControl:
+                cmdControl.deleteMe()
+
+        # Remove the drop-down if empty
+        if dropDownControl and dropDownControl.controls.count == 0:
+            dropDownControl.deleteMe()
+
+        # Remove the command definition
         cmdDef = ui.commandDefinitions.itemById('createCenterlineCmd')
         if cmdDef:
             cmdDef.deleteMe()
