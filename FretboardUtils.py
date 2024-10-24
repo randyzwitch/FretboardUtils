@@ -19,10 +19,10 @@ def run(context):
         # Create a drop-down control if it doesn't exist
         dropDownControl = sketchPanel.controls.itemById('customSketchDropdown')
         if not dropDownControl:
-            dropDownControl = sketchPanel.controls.addDropDown('Custom Sketch Tools', 
-                                                               'resources'
+            dropDownControl = sketchPanel.controls.addDropDown('Guitar Fretboard Utilities', 
+                                                               'resources',
                                                                'customSketchDropdown', 
-                                                               'Custom sketch tools drop-down')
+                                                               'Utilities for generating fretboards')
         
         # Add the command to the drop-down
         dropDownControl.controls.addCommand(cmdDef)
