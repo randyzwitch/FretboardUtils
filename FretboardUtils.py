@@ -8,7 +8,7 @@ def run(context):
         app = adsk.core.Application.get()
         ui = app.userInterface
         
-        # Create a new command definition without the resource folder argument
+        # Create a new command definition
         cmdDef = ui.commandDefinitions.addButtonDefinition('createCenterlineCmd', 
                                                            'Create Centerline', 
                                                            'Creates a centerline in the current sketch')
@@ -44,11 +44,16 @@ class CenterlineCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
         try:
             eventArgs = adsk.core.CommandCreatedEventArgs.cast(args)
             cmd = eventArgs.command
+
+            # Add a value input for scale length
+            inputs = cmd.commandInputs
+            inputs.addValueInput('scaleLength', 'Scale Length', 'in', adsk.core.ValueInput.createByReal(25.5))
             
+            # Connect the execute event
             onExecute = CenterlineCommandExecuteHandler()
             cmd.execute.add(onExecute)
             handlers.append(onExecute)
-            
+
         except:
             app = adsk.core.Application.get()
             ui = app.userInterface
@@ -60,6 +65,11 @@ class CenterlineCommandExecuteHandler(adsk.core.CommandEventHandler):
 
     def notify(self, args):
         try:
+            eventArgs = adsk.core.CommandEventArgs.cast(args)
+            inputs = eventArgs.command.commandInputs
+            scaleLengthInput = adsk.core.ValueCommandInput.cast(inputs.itemById('scaleLength'))
+            scale_length = scaleLengthInput.value
+            
             app = adsk.core.Application.get()
             ui = app.userInterface
             design = app.activeProduct
@@ -69,8 +79,13 @@ class CenterlineCommandExecuteHandler(adsk.core.CommandEventHandler):
 
             # Create a centerline
             lines = sketch.sketchCurves.sketchLines
-            centerLine = lines.addByTwoPoints(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(1, 0, 0))
+            centerLine = lines.addByTwoPoints(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(scale_length, 0, 0))
             centerLine.isConstruction = True
+            
+            # Add a dimension constraint to the line
+            sketch.sketchDimensions.addDistanceDimension(centerLine.startSketchPoint, centerLine.endSketchPoint, 
+                                                         adsk.fusion.DimensionOrientations.HorizontalDimensionOrientation, 
+                                                         adsk.core.Point3D.create(scale_length / 2, 0.5, 0))
 
         except:
             app = adsk.core.Application.get()
