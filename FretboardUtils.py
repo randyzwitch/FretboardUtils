@@ -86,6 +86,15 @@ class CenterlineCommandExecuteHandler(adsk.core.CommandEventHandler):
             sketch.sketchDimensions.addDistanceDimension(centerLine.startSketchPoint, centerLine.endSketchPoint, 
                                                          adsk.fusion.DimensionOrientations.HorizontalDimensionOrientation, 
                                                          adsk.core.Point3D.create(scale_length / 2, 0.5, 0))
+            
+            # Access the origin point of the sketch
+            originPoint = sketch.originPoint
+
+            # Add a coincident constraint between the start point of the line and the origin
+            sketch.geometricConstraints.addCoincident(centerLine.startSketchPoint, originPoint)
+
+            # Add a horizontal constraint to the line
+            sketch.geometricConstraints.addHorizontal(centerLine)
 
         except:
             app = adsk.core.Application.get()
